@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google'; // Changed import name
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/Header'; // Import Header
+import { ThemeProvider } from '@/components/ThemeProvider'; // Import ThemeProvider
 
 const geistSans = Geist({ // Use the correct variable name
   variable: '--font-geist-sans',
@@ -26,11 +27,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning> {/* Add suppressHydrationWarning for next-themes */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}>
-        <Header /> {/* Add Header component */}
-        <main className="flex-grow">{children}</main> {/* Wrap children in main for semantic structure */}
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Header /> {/* Add Header component */}
+          <main className="flex-grow">{children}</main> {/* Wrap children in main for semantic structure */}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
