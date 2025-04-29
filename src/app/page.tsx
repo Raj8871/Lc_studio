@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Wand2, Zap, CheckCircle, Settings, Copy, Rocket, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation'; // Import useRouter
+import Footer from '@/components/Footer'; // Import Footer
 
 export default function LandingPage() {
   const router = useRouter(); // Initialize router
@@ -167,7 +168,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Note: Footer is now in layout.tsx */}
+      {/* Add Footer specifically to this page */}
+      <Footer />
     </div>
   );
 }
