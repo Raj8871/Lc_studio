@@ -2,23 +2,14 @@
 'use client';
 
 import * as React from 'react';
-import dynamic from 'next/dynamic';
-import { useTheme } from 'next-themes';
 import { codeConversion, type CodeConversionInput } from '@/ai/flows/code-conversion';
 import { CodeBlock } from '@/components/CodeBlock';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-// Remove Textarea import
+import { Textarea } from '@/components/ui/textarea'; // Import Textarea
 import { useToast } from '@/hooks/use-toast';
 import { Wand2, Loader2, Info } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
-
-// Dynamically import Monaco Editor to ensure it only loads on the client-side
-const Editor = dynamic(() => import('@monaco-editor/react'), {
-  ssr: false,
-  loading: () => <Skeleton className="h-[350px] w-full" />, // Show skeleton while loading
-});
 
 // Key for storing input code in local storage
 const LOCAL_STORAGE_INPUT_KEY = 'react-converter-input-code';
@@ -28,10 +19,6 @@ export default function ConverterPage() {
   const [outputCode, setOutputCode] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const { toast } = useToast();
-  const { resolvedTheme } = useTheme(); // Use resolvedTheme for system preference
-
-  // Monaco editor needs a specific theme name ('vs-dark' or 'light')
-  const editorTheme = resolvedTheme === 'dark' ? 'vs-dark' : 'light';
 
   // Load input code from local storage on component mount (client-side only)
   React.useEffect(() => {
@@ -93,8 +80,8 @@ export default function ConverterPage() {
     }
   };
 
-  const handleEditorChange = (value: string | undefined) => {
-    setInputCode(value || '');
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputCode(event.target.value);
   };
 
   return (
@@ -109,28 +96,16 @@ export default function ConverterPage() {
         <CardContent className="space-y-6">
           <div className="grid w-full gap-2">
             <Label htmlFor="input-code-editor" className="text-foreground font-semibold">Input Code (HTML, CSS, JS)</Label>
-            {/* Replace Textarea with Monaco Editor */}
-            <div className="rounded-md border border-input overflow-hidden">
-              <Editor
-                height="350px"
-                // Default to HTML, which can handle embedded CSS/JS well
-                defaultLanguage="html"
-                value={inputCode}
-                onChange={handleEditorChange}
-                theme={editorTheme} // Set theme based on resolvedTheme
-                options={{
-                  automaticLayout: true, // Adjust layout on container resize
-                  wordWrap: 'on', // Enable word wrapping
-                  minimap: { enabled: false }, // Disable minimap for simplicity
-                  fontSize: 14,
-                  tabSize: 2,
-                  scrollBeyondLastLine: false,
-                  readOnly: isLoading, // Disable editor while loading
-                }}
-                // Use id for label association
-                // Note: Monaco doesn't directly support htmlFor, accessibility might need custom handling if required.
-              />
-            </div>
+            {/* Replace Monaco Editor with standard Textarea */}
+            <Textarea
+              id="input-code-editor"
+              value={inputCode}
+              onChange={handleInputChange}
+              placeholder="Paste your HTML, CSS, or JavaScript here..."
+              className="h-[350px] resize-y font-mono text-sm" // Apply similar height and styling
+              disabled={isLoading}
+              aria-label="Input code editor"
+            />
           </div>
 
           <div className="flex justify-center">
