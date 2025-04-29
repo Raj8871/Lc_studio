@@ -11,11 +11,37 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Wand2, Loader2 } from 'lucide-react';
 
+// Key for storing input code in local storage
+const LOCAL_STORAGE_INPUT_KEY = 'react-converter-input-code';
+
 export default function ConverterPage() {
   const [inputCode, setInputCode] = React.useState('');
   const [outputCode, setOutputCode] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const { toast } = useToast();
+
+  // Load input code from local storage on component mount (client-side only)
+  React.useEffect(() => {
+    try {
+      const savedCode = localStorage.getItem(LOCAL_STORAGE_INPUT_KEY);
+      if (savedCode) {
+        setInputCode(savedCode);
+      }
+    } catch (error) {
+      console.error("Failed to read from localStorage:", error);
+      // Handle potential errors (e.g., localStorage disabled)
+    }
+  }, []); // Empty dependency array ensures this runs only once on mount
+
+  // Save input code to local storage whenever it changes (client-side only)
+  React.useEffect(() => {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_INPUT_KEY, inputCode);
+    } catch (error) {
+      console.error("Failed to write to localStorage:", error);
+      // Handle potential errors (e.g., storage full)
+    }
+  }, [inputCode]); // Dependency array ensures this runs when inputCode changes
 
   const handleConvert = async () => {
     if (!inputCode.trim()) {
@@ -45,20 +71,18 @@ export default function ConverterPage() {
         description: 'Failed to convert the code. Please try again or check the console.',
         variant: 'destructive',
       });
-      // Optionally display the error message in the output or a dedicated area
-      // setOutputCode(`// Conversion Error:\n${error instanceof Error ? error.message : String(error)}`);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-background to-muted/30 p-4 md:p-8">
+    <div className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center bg-gradient-to-b from-background to-muted/30 p-4 md:p-8"> {/* Adjusted min-height */}
       <Card className="w-full max-w-4xl shadow-xl border border-border/50">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-foreground">React Component Converter</CardTitle>
           <CardDescription className="text-muted-foreground pt-2">
-            Paste your HTML, CSS, and JavaScript code below to convert it into a React component.
+            Paste your HTML, CSS, and JavaScript code below to convert it into a React component. Your input is saved locally.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -108,10 +132,6 @@ document.querySelector('button')?.addEventListener('click', handleClick);
           </div>
         </CardContent>
       </Card>
-       {/* Footer (optional for converter page) */}
-       <footer className="mt-8 text-center text-xs text-muted-foreground">
-         <p>&copy; {new Date().getFullYear()} React Component Converter.</p>
-       </footer>
     </div>
   );
 }
