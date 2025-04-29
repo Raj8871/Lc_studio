@@ -2,59 +2,17 @@
 'use client';
 
 import * as React from 'react';
-import { codeConversion, type CodeConversionInput } from '@/ai/flows/code-conversion';
-import { CodeBlock } from '@/components/CodeBlock';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
-import { Wand2, Loader2, Zap, CheckCircle, Settings, Rocket } from 'lucide-react';
+import { Wand2, Zap, CheckCircle, Settings, Rocket } from 'lucide-react';
+import { useRouter } from 'next/navigation'; // Import useRouter
 
-export default function Home() {
-  const [inputCode, setInputCode] = React.useState('');
-  const [outputCode, setOutputCode] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false);
-  const { toast } = useToast();
-  const converterRef = React.useRef<HTMLDivElement>(null);
+export default function LandingPage() {
+  const router = useRouter(); // Initialize router
 
-  const handleConvert = async () => {
-    if (!inputCode.trim()) {
-      toast({
-        title: 'Input Required',
-        description: 'Please enter some code to convert.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    setOutputCode(''); // Clear previous output
-
-    try {
-      const input: CodeConversionInput = { code: inputCode };
-      const result = await codeConversion(input);
-      setOutputCode(result.reactComponentCode);
-      toast({
-        title: 'Conversion Successful!',
-        description: 'Your React component is ready.',
-      });
-    } catch (error) {
-      console.error('Conversion failed:', error);
-      toast({
-        title: 'Conversion Error',
-        description: 'Failed to convert the code. Please check the console for details.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
-    }
+  const navigateToConverter = () => {
+    router.push('/converter'); // Navigate to the converter page
   };
-
-   const scrollToConverter = () => {
-    converterRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
@@ -74,10 +32,10 @@ export default function Home() {
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
                 <Button
                   size="lg"
-                  onClick={scrollToConverter}
+                  onClick={navigateToConverter} // Updated onClick handler
                   className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-md transition-transform duration-300 ease-in-out hover:scale-105"
                 >
-                  <Wand2 className="mr-2 h-5 w-5" /> Start Converting
+                  <Wand2 className="mr-2 h-5 w-5" /> Try the Converter
                 </Button>
                  <Button
                   size="lg"
@@ -150,6 +108,7 @@ export default function Home() {
              Converting your code is straightforward. Follow these simple steps to generate your React component instantly.
             </p>
              <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
+               <li>Navigate to the Converter page.</li>
                <li>Paste your combined HTML, CSS, and JavaScript code into the input area.</li>
                <li>Click the "Convert to React" button.</li>
                <li>Review and copy the generated React component from the output area.</li>
@@ -162,62 +121,6 @@ export default function Home() {
         </div>
       </section>
 
-
-      {/* Converter Section */}
-      <section ref={converterRef} className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-muted/30 to-background">
-        <div className="container px-4 md:px-6">
-           <Card className="w-full max-w-3xl mx-auto shadow-xl border border-border/50">
-            <CardHeader className="text-center">
-              <CardTitle className="text-3xl font-bold text-foreground">Try the Converter</CardTitle>
-              <CardDescription className="text-muted-foreground pt-2">
-                Paste your HTML, CSS, and JavaScript code below.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid w-full gap-2">
-                <Label htmlFor="input-code" className="text-foreground font-semibold">Input Code</Label>
-                <Textarea
-                  id="input-code"
-                  placeholder="<!-- Your HTML here -->
-<style>
-/* Your CSS here */
-</style>
-<script>
-// Your JavaScript here
-</script>"
-                  value={inputCode}
-                  onChange={(e) => setInputCode(e.target.value)}
-                  className="min-h-[250px] font-mono text-sm resize-y bg-background border-input focus:border-accent focus:ring-accent transition-colors duration-200"
-                  disabled={isLoading}
-                  aria-label="Input code area"
-                />
-              </div>
-
-              <div className="flex justify-center">
-                <Button
-                  onClick={handleConvert}
-                  disabled={isLoading || !inputCode.trim()}
-                  className="bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 text-lg rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                  aria-label="Convert code"
-                >
-                  {isLoading ? (
-                    <Loader2 className="mr-2 h-6 w-6 animate-spin" />
-                  ) : (
-                    <Wand2 className="mr-2 h-6 w-6" />
-                  )}
-                  Convert to React
-                </Button>
-              </div>
-
-              <div className="grid w-full gap-2">
-                 <Label htmlFor="output-code" className="text-foreground font-semibold">Output React Component</Label>
-                 <CodeBlock id="output-code" code={outputCode} isLoading={isLoading} aria-live="polite" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
       {/* Footer */}
        <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} React Component Converter. All rights reserved.</p>
@@ -226,5 +129,3 @@ export default function Home() {
     </div>
   );
 }
- 
-   
