@@ -10,19 +10,19 @@ body {
   :root {
     /* Light Theme - Based on User Request */
     --background: 0 0% 94.1%; /* #f0f0f0 */
-    --foreground: 0 0% 20%; /* #333333 */
+    --foreground: 0 0% 13%; /* Slightly darker than #333 for better contrast - effectively black */
     --card: 0 0% 94.1%; /* #f0f0f0 */
-    --card-foreground: 0 0% 20%; /* #333333 */
+    --card-foreground: 0 0% 13%; /* Black text on cards */
     --popover: 0 0% 94.1%; /* #f0f0f0 */
-    --popover-foreground: 0 0% 20%; /* #333333 */
-    --primary: 0 0% 20%; /* #333333 */
-    --primary-foreground: 0 0% 94.1%; /* #f0f0f0 - Adjusted for contrast */
+    --popover-foreground: 0 0% 13%; /* Black text on popovers */
+    --primary: 0 0% 13%; /* Black primary elements */
+    --primary-foreground: 0 0% 98%; /* White text on primary elements */
     --secondary: 0 0% 90%; /* Lighter shade of gray */
-    --secondary-foreground: 0 0% 20%; /* #333333 */
+    --secondary-foreground: 0 0% 13%; /* Black text on secondary */
     --muted: 0 0% 90%; /* Lighter shade of gray */
-    --muted-foreground: 0 0% 45.1%; /* Default muted foreground */
+    --muted-foreground: 0 0% 40%; /* Darker gray muted text */
     --accent: 180 100% 25.1%; /* #008080 */
-    --accent-foreground: 0 0% 94.1%; /* #f0f0f0 - Adjusted for contrast */
+    --accent-foreground: 0 0% 98%; /* White text on accent */
     --destructive: 0 84.2% 60.2%; /* Default destructive */
     --destructive-foreground: 0 0% 98%; /* Default destructive foreground */
     --border: 0 0% 85%; /* Slightly darker border for contrast */
@@ -35,57 +35,78 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-foreground: 0 0% 13%; /* Black text in sidebar */
+    --sidebar-primary: 0 0% 13%; /* Black primary in sidebar */
+    --sidebar-primary-foreground: 0 0% 98%; /* White text on primary in sidebar */
+    --sidebar-accent: 0 0% 90%; /* Lighter gray accent in sidebar */
+    --sidebar-accent-foreground: 0 0% 13%; /* Black text on accent in sidebar */
+    --sidebar-border: 0 0% 85%;
+    --sidebar-ring: 180 100% 25.1%; /* Teal ring */
   }
 
   .dark {
     /* Dark Theme - Provide contrasting defaults */
-    --background: 0 0% 15%; /* Darker gray */
-    --foreground: 0 0% 94.1%; /* #f0f0f0 */
-    --card: 0 0% 15%; /* Darker gray */
-    --card-foreground: 0 0% 94.1%; /* #f0f0f0 */
-    --popover: 0 0% 15%; /* Darker gray */
-    --popover-foreground: 0 0% 94.1%; /* #f0f0f0 */
-    --primary: 0 0% 94.1%; /* #f0f0f0 */
-    --primary-foreground: 0 0% 20%; /* #333333 */
-    --secondary: 0 0% 25%; /* Slightly lighter dark gray */
-    --secondary-foreground: 0 0% 94.1%; /* #f0f0f0 */
-    --muted: 0 0% 25%; /* Slightly lighter dark gray */
-    --muted-foreground: 0 0% 63.9%; /* Lighter muted foreground */
+    --background: 0 0% 10%; /* Darker gray */
+    --foreground: 0 0% 98%; /* White text */
+    --card: 0 0% 12%; /* Slightly lighter dark gray for cards */
+    --card-foreground: 0 0% 98%; /* White text on cards */
+    --popover: 0 0% 10%; /* Darker gray for popovers */
+    --popover-foreground: 0 0% 98%; /* White text on popovers */
+    --primary: 0 0% 98%; /* White primary elements */
+    --primary-foreground: 0 0% 9%; /* Black text on primary elements */
+    --secondary: 0 0% 15%; /* Slightly lighter dark gray */
+    --secondary-foreground: 0 0% 98%; /* White text on secondary */
+    --muted: 0 0% 15%; /* Slightly lighter dark gray */
+    --muted-foreground: 0 0% 65%; /* Lighter muted foreground */
     --accent: 180 100% 35%; /* Brighter Teal for dark mode */
-    --accent-foreground: 0 0% 10%; /* Dark for contrast on accent */
+    --accent-foreground: 0 0% 9%; /* Dark text for contrast on accent */
     --destructive: 0 62.8% 40.6%; /* Darker destructive */
     --destructive-foreground: 0 0% 98%; /* Default destructive foreground */
-    --border: 0 0% 30%; /* Darker border */
-    --input: 0 0% 30%; /* Input border same as border */
+    --border: 0 0% 20%; /* Darker border */
+    --input: 0 0% 20%; /* Input border same as border */
     --ring: 180 100% 35%; /* Brighter Teal ring */
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 8%; /* Very dark sidebar */
+    --sidebar-foreground: 0 0% 98%; /* White text in sidebar */
+    --sidebar-primary: 0 0% 98%; /* White primary in sidebar */
+    --sidebar-primary-foreground: 0 0% 9%; /* Black text on primary in sidebar */
+    --sidebar-accent: 0 0% 15%; /* Dark gray accent in sidebar */
+    --sidebar-accent-foreground: 0 0% 98%; /* White text on accent in sidebar */
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 180 100% 35%; /* Teal ring */
   }
 }
 
+/* Apply base text color */
 @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+    /* Add transition for smoother color changes */
+    @apply transition-colors duration-300 ease-in-out;
+  }
+  /* Ensure other text elements inherit color and transition */
+  p, h1, h2, h3, h4, h5, h6, span, div, li, button, a, label, input, textarea, select {
+    @apply transition-colors duration-300 ease-in-out;
   }
 }
+
+/* Ensure links also use foreground color by default */
+a {
+  @apply text-accent hover:text-accent/80;
+}
+
+/* Ensure buttons use appropriate foreground colors based on their variant */
+.btn-primary { @apply text-primary-foreground; }
+.btn-secondary { @apply text-secondary-foreground; }
+.btn-accent { @apply text-accent-foreground; }
+.btn-destructive { @apply text-destructive-foreground; }
+.btn-ghost { @apply text-accent-foreground; }
+.btn-link { @apply text-primary; }
+.btn-outline { @apply text-accent-foreground; }
