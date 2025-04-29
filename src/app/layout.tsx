@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/Header';
+import Footer from '@/components/Footer'; // Import Footer
 import { ThemeProvider } from '@/components/ThemeProvider';
 
 const geistSans = Geist({
@@ -37,6 +38,7 @@ export default function RootLayout({
         >
           <Header />
           <main className="flex-grow">{children}</main>
+          <Footer /> {/* Add Footer here */}
           <Toaster />
         </ThemeProvider>
       </body>

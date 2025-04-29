@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Wand2, Zap, CheckCircle, Settings, Rocket } from 'lucide-react';
+import { Wand2, Zap, CheckCircle, Settings, Copy, Rocket, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation'; // Import useRouter
 
 export default function LandingPage() {
@@ -17,16 +17,16 @@ export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       {/* Hero Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-b from-background to-muted/30">
+      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-b from-background to-muted/30 dark:from-slate-900 dark:to-slate-800">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
-                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none text-primary">
-                  Effortlessly Convert Code to React
+                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none text-primary dark:text-primary-foreground">
+                   Convert HTML/CSS/JS to React Instantly!
                 </h1>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Our AI-powered tool instantly transforms your HTML, CSS, and JavaScript into clean, optimized React functional components. Save time and modernize your codebase.
+                <p className="max-w-[600px] text-muted-foreground md:text-xl dark:text-slate-400">
+                  Save time. Get clean React code in seconds.
                 </p>
               </div>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -41,6 +41,7 @@ export default function LandingPage() {
                   size="lg"
                   variant="outline"
                    onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                   className="dark:text-white dark:border-slate-600 dark:hover:bg-slate-700"
                 >
                   Learn More
                 </Button>
@@ -48,84 +49,125 @@ export default function LandingPage() {
             </div>
              <div className="hidden lg:flex items-center justify-center">
                 {/* Placeholder for an illustrative image or animation */}
-                <Wand2 size={200} className="text-accent opacity-30" />
+                <Wand2 size={200} className="text-accent opacity-30 dark:text-teal-500" />
               </div>
           </div>
         </div>
       </section>
 
        {/* Features Section */}
-      <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-muted/30">
+      <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-muted/30 dark:bg-slate-800">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm text-secondary-foreground">Key Features</div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-primary">Why Use Our Converter?</h2>
-              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Streamline your development workflow with intelligent code conversion.
+              <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm text-secondary-foreground dark:bg-slate-700 dark:text-slate-300">Key Features</div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-primary dark:text-primary-foreground">Features</h2>
+              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-slate-400">
+                Leverage powerful features designed for developers.
               </p>
             </div>
           </div>
-          <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 pt-12">
-            <div className="grid gap-1 text-center md:text-left">
-               <div className="flex justify-center md:justify-start items-center gap-2">
-                 <Zap className="h-8 w-8 text-accent" />
-                 <h3 className="text-xl font-bold text-foreground">Instant Conversion</h3>
-               </div>
-              <p className="text-sm text-muted-foreground">
-                Get functional React code in seconds. Paste your legacy code and let our AI handle the rest.
-              </p>
-            </div>
-             <div className="grid gap-1 text-center md:text-left">
-                <div className="flex justify-center md:justify-start items-center gap-2">
-                 <CheckCircle className="h-8 w-8 text-accent" />
-                 <h3 className="text-xl font-bold text-foreground">Optimized Output</h3>
-               </div>
-              <p className="text-sm text-muted-foreground">
-                Generates clean, modern React code following best practices, including hooks (useState, useEffect).
-              </p>
-            </div>
-             <div className="grid gap-1 text-center md:text-left">
-               <div className="flex justify-center md:justify-start items-center gap-2">
-                 <Settings className="h-8 w-8 text-accent" />
-                 <h3 className="text-xl font-bold text-foreground">Handles Complexity</h3>
-                </div>
-              <p className="text-sm text-muted-foreground">
-                Intelligently refactors JavaScript DOM manipulations and CSS styles into appropriate React patterns.
-              </p>
-            </div>
+          <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-4 pt-12">
+             {/* Feature Card 1 */}
+             <Card className="text-center transform transition duration-300 hover:scale-105 hover:shadow-lg dark:bg-slate-700 dark:border-slate-600">
+              <CardHeader>
+                 <div className="flex justify-center items-center mb-2">
+                   <Zap className="h-10 w-10 text-accent dark:text-teal-400" />
+                 </div>
+                <CardTitle className="text-lg font-bold text-foreground dark:text-white">Fast & Accurate Conversion</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-sm text-muted-foreground dark:text-slate-400">
+                  Get functional React code in seconds with high accuracy.
+                </CardDescription>
+              </CardContent>
+            </Card>
+            {/* Feature Card 2 */}
+             <Card className="text-center transform transition duration-300 hover:scale-105 hover:shadow-lg dark:bg-slate-700 dark:border-slate-600">
+              <CardHeader>
+                 <div className="flex justify-center items-center mb-2">
+                   <CheckCircle className="h-10 w-10 text-accent dark:text-teal-400" />
+                 </div>
+                <CardTitle className="text-lg font-bold text-foreground dark:text-white">Clean JSX Output</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-sm text-muted-foreground dark:text-slate-400">
+                  Generates modern, readable React code following best practices.
+                </CardDescription>
+              </CardContent>
+            </Card>
+            {/* Feature Card 3 */}
+             <Card className="text-center transform transition duration-300 hover:scale-105 hover:shadow-lg dark:bg-slate-700 dark:border-slate-600">
+               <CardHeader>
+                 <div className="flex justify-center items-center mb-2">
+                   <Settings className="h-10 w-10 text-accent dark:text-teal-400" />
+                 </div>
+                <CardTitle className="text-lg font-bold text-foreground dark:text-white">Developer Friendly Interface</CardTitle>
+               </CardHeader>
+              <CardContent>
+                <CardDescription className="text-sm text-muted-foreground dark:text-slate-400">
+                  Simple and intuitive UI designed for ease of use.
+                </CardDescription>
+              </CardContent>
+            </Card>
+             {/* Feature Card 4 */}
+             <Card className="text-center transform transition duration-300 hover:scale-105 hover:shadow-lg dark:bg-slate-700 dark:border-slate-600">
+               <CardHeader>
+                 <div className="flex justify-center items-center mb-2">
+                   <Copy className="h-10 w-10 text-accent dark:text-teal-400" />
+                 </div>
+                <CardTitle className="text-lg font-bold text-foreground dark:text-white">Easy Copy to Clipboard</CardTitle>
+               </CardHeader>
+              <CardContent>
+                <CardDescription className="text-sm text-muted-foreground dark:text-slate-400">
+                   Quickly copy the generated React component code with a single click.
+                </CardDescription>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* How It Works Section */}
-       <section className="w-full py-12 md:py-24 lg:py-32">
-        <div className="container grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
-          <div className="space-y-4">
-            <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm text-secondary-foreground">How It Works</div>
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-primary">Simple Steps to Modern Code</h2>
-            <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-             Converting your code is straightforward. Follow these simple steps to generate your React component instantly.
+       <section className="w-full py-12 md:py-24 lg:py-32 dark:bg-background">
+        <div className="container grid items-center justify-center gap-6 px-4 text-center md:px-6 lg:gap-10">
+          <div className="space-y-3">
+             <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm text-secondary-foreground dark:bg-slate-700 dark:text-slate-300">How It Works</div>
+            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-primary dark:text-primary-foreground">Simple Steps to Modern Code</h2>
+            <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-slate-400">
+             Converting your code is straightforward. Follow these simple steps.
             </p>
-             <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
-               <li>Navigate to the Converter page.</li>
-               <li>Paste your combined HTML, CSS, and JavaScript code into the input area.</li>
-               <li>Click the "Convert to React" button.</li>
-               <li>Review and copy the generated React component from the output area.</li>
-             </ol>
           </div>
-           <div className="flex items-center justify-center">
-            {/* You could replace this with a simple graphic or steps visualization */}
-            <Rocket size={150} className="text-accent opacity-30" />
+           <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 pt-8 sm:grid-cols-3 sm:gap-12">
+            {/* Step 1 */}
+            <div className="flex flex-col items-center space-y-2">
+              <div className="rounded-full bg-accent/10 p-3 dark:bg-teal-900/30">
+                 <Wand2 className="h-8 w-8 text-accent dark:text-teal-400" />
+              </div>
+              <h3 className="text-lg font-bold dark:text-white">1. Paste Your Code</h3>
+              <p className="text-sm text-muted-foreground dark:text-slate-400">Enter your HTML, CSS, and JavaScript into the input area.</p>
+            </div>
+            {/* Step 2 */}
+            <div className="flex flex-col items-center space-y-2">
+              <div className="rounded-full bg-accent/10 p-3 dark:bg-teal-900/30">
+                 <ArrowRight className="h-8 w-8 text-accent dark:text-teal-400" />
+              </div>
+              <h3 className="text-lg font-bold dark:text-white">2. Click Convert</h3>
+              <p className="text-sm text-muted-foreground dark:text-slate-400">Hit the convert button and let the AI do the magic.</p>
+            </div>
+             {/* Step 3 */}
+            <div className="flex flex-col items-center space-y-2">
+              <div className="rounded-full bg-accent/10 p-3 dark:bg-teal-900/30">
+                 <Rocket className="h-8 w-8 text-accent dark:text-teal-400" />
+              </div>
+              <h3 className="text-lg font-bold dark:text-white">3. Get React Code</h3>
+              <p className="text-sm text-muted-foreground dark:text-slate-400">Receive a clean, ready-to-use React component.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} React Component Converter. All rights reserved.</p>
-        {/* Add any footer links if needed */}
-      </footer>
+      {/* Note: Footer is now in layout.tsx */}
     </div>
   );
 }
