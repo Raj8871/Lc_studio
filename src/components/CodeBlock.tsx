@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -40,19 +41,19 @@ export function CodeBlock({ code, isLoading, className, ...props }: CodeBlockPro
   return (
     <div
       className={cn(
-        'relative w-full rounded-md border bg-muted/30 p-4 font-mono text-sm',
+        'relative w-full rounded-md border bg-muted/30 p-4 font-mono text-sm shadow-inner', // Added inner shadow
         className
       )}
       {...props}
     >
-      <ScrollArea className="h-[300px] max-h-[50vh]">
+      <ScrollArea className="h-[350px] max-h-[60vh]"> {/* Increased height */}
         {isLoading ? (
           <div className="flex h-full items-center justify-center text-muted-foreground">
              <Loader2 className="mr-2 h-6 w-6 animate-spin" />
             <span>Converting...</span>
           </div>
         ) : code ? (
-          <pre>
+          <pre className="whitespace-pre-wrap break-words"> {/* Ensure wrapping */}
             <code>{code}</code>
           </pre>
         ) : (
@@ -65,7 +66,7 @@ export function CodeBlock({ code, isLoading, className, ...props }: CodeBlockPro
         <Button
           size="icon"
           variant="ghost"
-          className="absolute right-2 top-2 h-7 w-7"
+          className="absolute right-2 top-2 h-8 w-8 text-muted-foreground hover:bg-accent/10 hover:text-accent-foreground" // Adjusted styling
           onClick={handleCopy}
           aria-label={isCopied ? 'Copied' : 'Copy code'}
         >
@@ -79,3 +80,6 @@ export function CodeBlock({ code, isLoading, className, ...props }: CodeBlockPro
     </div>
   );
 }
+
+ 
+   
