@@ -2,14 +2,23 @@
 'use client';
 
 import * as React from 'react';
+import dynamic from 'next/dynamic';
+import { useTheme } from 'next-themes';
 import { codeConversion, type CodeConversionInput } from '@/ai/flows/code-conversion';
 import { CodeBlock } from '@/components/CodeBlock';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+// Remove Textarea import
 import { useToast } from '@/hooks/use-toast';
-import { Wand2, Loader2 } from 'lucide-react';
+import { Wand2, Loader2, Info } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+
+// Dynamically import Monaco Editor to ensure it only loads on the client-side
+const Editor = dynamic(() => import('@monaco-editor/react'), {
+  ssr: false,
+  loading: () => <Skeleton className="h-[350px] w-full" />, // Show skeleton while loading
+});
 
 // Key for storing input code in local storage
 const LOCAL_STORAGE_INPUT_KEY = 'react-converter-input-code';
@@ -19,6 +28,10 @@ export default function ConverterPage() {
   const [outputCode, setOutputCode] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const { toast } = useToast();
+  const { resolvedTheme } = useTheme(); // Use resolvedTheme for system preference
+
+  // Monaco editor needs a specific theme name ('vs-dark' or 'light')
+  const editorTheme = resolvedTheme === 'dark' ? 'vs-dark' : 'light';
 
   // Load input code from local storage on component mount (client-side only)
   React.useEffect(() => {
@@ -29,9 +42,13 @@ export default function ConverterPage() {
       }
     } catch (error) {
       console.error("Failed to read from localStorage:", error);
-      // Handle potential errors (e.g., localStorage disabled)
+      toast({
+        title: 'Local Storage Error',
+        description: 'Could not load previously saved code.',
+        variant: 'destructive',
+      });
     }
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, [toast]); // Empty dependency array ensures this runs only once on mount
 
   // Save input code to local storage whenever it changes (client-side only)
   React.useEffect(() => {
@@ -39,7 +56,7 @@ export default function ConverterPage() {
       localStorage.setItem(LOCAL_STORAGE_INPUT_KEY, inputCode);
     } catch (error) {
       console.error("Failed to write to localStorage:", error);
-      // Handle potential errors (e.g., storage full)
+      // Consider adding a toast notification here if saving fails
     }
   }, [inputCode]); // Dependency array ensures this runs when inputCode changes
 
@@ -68,7 +85,7 @@ export default function ConverterPage() {
       console.error('Conversion failed:', error);
       toast({
         title: 'Conversion Error',
-        description: 'Failed to convert the code. Please try again or check the console.',
+        description: `Failed to convert the code. ${error instanceof Error ? error.message : 'Please try again or check the console.'}`,
         variant: 'destructive',
       });
     } finally {
@@ -76,38 +93,44 @@ export default function ConverterPage() {
     }
   };
 
+  const handleEditorChange = (value: string | undefined) => {
+    setInputCode(value || '');
+  };
+
   return (
-    <div className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center bg-gradient-to-b from-background to-muted/30 p-4 md:p-8"> {/* Adjusted min-height */}
+    <div className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center bg-gradient-to-b from-background to-muted/30 p-4 md:p-8">
       <Card className="w-full max-w-4xl shadow-xl border border-border/50">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-foreground">React Component Converter</CardTitle>
-          <CardDescription className="text-muted-foreground pt-2">
-            Paste your HTML, CSS, and JavaScript code below to convert it into a React component. Your input is saved locally.
+          <CardDescription className="text-muted-foreground pt-2 flex items-center justify-center gap-1">
+            <Info size={14}/> Paste HTML, CSS, JS. Your input is saved locally.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid w-full gap-2">
-            <Label htmlFor="input-code" className="text-foreground font-semibold">Input Code (HTML, CSS, JS)</Label>
-            <Textarea
-              id="input-code"
-              placeholder="<!-- Your HTML here -->
-<style>
-/* Your CSS here */
-.my-class { color: blue; }
-</style>
-<script>
-// Your JavaScript here
-function handleClick() { console.log('Clicked!'); }
-document.querySelector('button')?.addEventListener('click', handleClick);
-</script>
-<button class='my-class'>Click Me</button>
-"
-              value={inputCode}
-              onChange={(e) => setInputCode(e.target.value)}
-              className="min-h-[300px] font-mono text-sm resize-y bg-background border-input focus:border-accent focus:ring-accent transition-colors duration-200"
-              disabled={isLoading}
-              aria-label="Input code area for HTML, CSS, and JavaScript"
-            />
+            <Label htmlFor="input-code-editor" className="text-foreground font-semibold">Input Code (HTML, CSS, JS)</Label>
+            {/* Replace Textarea with Monaco Editor */}
+            <div className="rounded-md border border-input overflow-hidden">
+              <Editor
+                height="350px"
+                // Default to HTML, which can handle embedded CSS/JS well
+                defaultLanguage="html"
+                value={inputCode}
+                onChange={handleEditorChange}
+                theme={editorTheme} // Set theme based on resolvedTheme
+                options={{
+                  automaticLayout: true, // Adjust layout on container resize
+                  wordWrap: 'on', // Enable word wrapping
+                  minimap: { enabled: false }, // Disable minimap for simplicity
+                  fontSize: 14,
+                  tabSize: 2,
+                  scrollBeyondLastLine: false,
+                  readOnly: isLoading, // Disable editor while loading
+                }}
+                // Use id for label association
+                // Note: Monaco doesn't directly support htmlFor, accessibility might need custom handling if required.
+              />
+            </div>
           </div>
 
           <div className="flex justify-center">
@@ -128,7 +151,8 @@ document.querySelector('button')?.addEventListener('click', handleClick);
 
           <div className="grid w-full gap-2">
              <Label htmlFor="output-code" className="text-foreground font-semibold">Output React Component</Label>
-             <CodeBlock id="output-code" code={outputCode} isLoading={isLoading} aria-live="polite" />
+             {/* Ensure CodeBlock uses a language prop if needed for highlighting */}
+             <CodeBlock id="output-code" code={outputCode} isLoading={isLoading} language="javascript" aria-live="polite" />
           </div>
         </CardContent>
       </Card>

@@ -12,9 +12,10 @@ import { cn } from '@/lib/utils';
 interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   code: string;
   isLoading?: boolean;
+  language?: string; // Optional language prop for potential syntax highlighting
 }
 
-export function CodeBlock({ code, isLoading, className, ...props }: CodeBlockProps) {
+export function CodeBlock({ code, isLoading, language, className, ...props }: CodeBlockProps) {
   const { toast } = useToast();
   const [isCopied, setIsCopied] = React.useState(false);
 
@@ -38,6 +39,9 @@ export function CodeBlock({ code, isLoading, className, ...props }: CodeBlockPro
     }
   };
 
+  // Add language class for potential CSS-based highlighting or future library integration
+  const langClass = language ? `language-${language}` : '';
+
   return (
     <div
       className={cn(
@@ -53,8 +57,8 @@ export function CodeBlock({ code, isLoading, className, ...props }: CodeBlockPro
             <span>Converting...</span>
           </div>
         ) : code ? (
-          <pre className="whitespace-pre-wrap break-words"> {/* Ensure wrapping */}
-            <code>{code}</code>
+          <pre className={cn("whitespace-pre-wrap break-words", langClass)}> {/* Ensure wrapping and add language class */}
+            <code className={langClass}>{code}</code>
           </pre>
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground">
@@ -80,6 +84,3 @@ export function CodeBlock({ code, isLoading, className, ...props }: CodeBlockPro
     </div>
   );
 }
-
- 
-   
